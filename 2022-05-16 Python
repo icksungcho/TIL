@@ -1,0 +1,14 @@
+* pivot_table - cacalulation, index&values needed
+* groupby - for more than two caculation, need aggfunc
+* crosstab
+* 제 3사분위 수 (Q3) : 중앙값 기준으로 상위 50% 중의 중앙값, 전체 데이터 중 상위 25%에 해당하는 값
+* 제 1사분위 수 (Q1) : 중앙값 기준으로 하위 50% 중의 중앙값, 전체 데이터 중 하위 25%에 해당하는 값
+* 사분위 범위 수(IQR) : 데이터의 중간 50% (Q3 - Q1) 
+* OUT_MAX = Q3 + (1.5 +IQR)
+* OUT_MIN =  Q3 + (1.5 -IQR)
+* scatterplot is not appropriate for categorical data
+catplot + countplot does not need a y value, only x value needed
+
+FinanceDataReader - a tool for financial data
+read_html - turn into DataFrame - concate 
+str.contains - if not, ~
