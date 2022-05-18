@@ -1,0 +1,13 @@
+Web Scrapping
+ - BeautifulSoup
+ - requests
+ - read_html
+ 
+ # url을 f-string 으로 만들어 줍니다.
+ url = f"https://opengov.seoul.go.kr/civilappeal/list?items_per_page=100&page={page_no}"
+
+ # requests 를 통해 HTTP 통신으로 url 에 요청을 보내서 결과 값을 받아옵니다.
+ response = requests.get(url)
+ # 위에서 받은 결과값을 재사용합니다. 
+ # 테이블을 데이터프레임으로 만들어 줍니다.
+ df_table = pd.read_html(response.text)[0]
