@@ -1,0 +1,45 @@
+# Since all data that we need must place between 0 to 1, we need;
+def check_range(df):
+    df_mask = df.isna()
+    df_filled = df.mask(df_mask, 0.5)
+    gte0 = df_filled >= 0.0
+    lte1 = df_filled <= 1.0
+    return gte0.all(axis=None) and lte1.all(axis=None)
+ 
+ # if there is null value;
+ def check_no_na(df):
+    return not df.isna().any(axis=None)
+ 
+ # To remove the duplicated values;
+ def check_foodnames(dfs):
+    sets = [set(df.index) for df in dfs]
+    return set.intersection(*sets) == set.union(*sets)
+    
+ # To make sure there is nothing wrong in the dataframe;
+ def make_dummy(values, names):
+    return pd.DataFrame(values, index=names)
+    
+ # A difference between any and all;
+ # If there is any value that is True, any works
+ # If all values are True, all works
+ 
+ # To apply min max scaling and remove the columns that have same max and min
+ def scale_minmax(df):
+    min_value = df.min()
+    max_value = df.max()
+    extent = max_value - min_value
+    return ((df - min_value) / extent).loc[:, extent > 0]
+    
+ # To remove null values;
+ def fillna(df):
+    return df.mask(df.isna(), 0.5)
+ # To get mean;
+spicy = fillna(scale_minmax(df_spicy)).mean(axis=1)
+oily = fillna(scale_minmax(df_oily)).mean(axis=1)
+sweet = fillna(scale_minmax(df_sweet)).mean(axis=1)
+
+# To cluster the all dataframes into one;
+df = pd \
+    .concat([spicy, oily, sweet], axis=1, keys=['spicy', 'oily', 'sweet']) \
+    .dropna()
+df
