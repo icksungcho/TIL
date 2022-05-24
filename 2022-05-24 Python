@@ -1,1 +1,57 @@
 Analyzed stock daily price with pandas and visualized them with plotly
+px.line(df)
+px.bar(df)
+* To get the subplot, we need a column name to make facet_col.
+px.area(df)
+
+* Making time series graphs with Range slider
+fig = px.line(df,x=df.index,y='AAPL')
+fig.update_xaxes(rangeslider_visible=True)
+fig.show()
+
+* Showing only financial data with candlestick chart
+import pandas as pd
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
+fig = go.Figure(data=[go.Candlestick(x=df['Date'],
+                open=df['AAPL.Open'],
+                high=df['AAPL.High'],
+                low=df['AAPL.Low'],
+                close=df['AAPL.Close'])])
+
+fig.show()
+
+* OHLC(Open-High-Low-Close)
+fig = go.Figure(data=go.Ohlc(x=df['Date'],
+                    open=df['AAPL.Open'],
+                    high=df['AAPL.High'],
+                    low=df['AAPL.Low'],
+                    close=df['AAPL.Close']))
+fig.show()
+
+* Candlestick without Rangeslider
+fig = go.Figure(data=go.Ohlc(x=df['Date'],
+                open=df['AAPL.Open'],
+                high=df['AAPL.High'],
+                low=df['AAPL.Low'],
+                close=df['AAPL.Close']))
+fig.update(layout_xaxis_rangeslider_visible=False)
+fig.show()
+
+px.histogram(tsla,x='Change',marginal="box")
+
+* scatter
+px.scatter(df,x=,y=)
+px.scatter_matrix(data_frame =df)
+
+* distribution
+px.box(df,points='all',notched=True)
+
+* px.violin
+px.violin(df,x='FB',points='all',box=True)
+
+* px.strip
+px.strip(df)
+
+# px.histogram
+px.histogram(df,facet_col='')
+
