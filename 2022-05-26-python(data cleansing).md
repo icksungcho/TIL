@@ -3,12 +3,12 @@ Let's say this is an original code:
 
 def check_range(dfs):
 
-  df_mask = df.isna()
-  df_filled = df.mask(df_mask, 0.5)
-  gte0 = df_filled >= 0.0
-  lte1 = df_filled <= 1.0
+   df_mask = df.isna()
+   df_filled = df.mask(df_mask, 0.5)
+   gte0 = df_filled >= 0.0
+   lte1 = df_filled <= 1.0
   
-  return gte0.all(axis=None) and lte1.all(axis=None) 
+   return gte0.all(axis=None) and lte1.all(axis=None) 
   
 We can change it with data cleansing;
 
