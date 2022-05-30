@@ -1,0 +1,15 @@
+- Long, Wide Format(Tidy)
+- glob : To return all file paths that match a specific pattern
+
+- Delete all the redundant data to reduce memories 
+- melt
+- pd.to_numeric
+        errors
+                1) coerce : Change things that never convert to numerical values null values.
+                2) ignore : Ignore hings that never convert to numerical values.
+- pivot_table
+- apply
+- sns.barplot, sns.pointplot, sns.boxplot, sns.swarmplot, sns.violinplot
+- A difference between using lineplot and pointplot = type of data(categorical or numerical)
+- Kosis 데이터
+- columns rename
