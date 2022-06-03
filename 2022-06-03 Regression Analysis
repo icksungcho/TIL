@@ -1,1 +1,38 @@
+Population Parameter : A number that describes something about an entire group or population
 
+** To t-test, we need pingouin
+  t-test : pg.ttest(df, 0)
+  99% confidence interval : pg.ttest(df, 0, confidence=.99)
+  or using bootstrap;
+  95% confidence interval : bootstrap([df], np.mean, confidence_level=.95)
+ 
+** Null, alternative hypothesis
+  if p-value is less than 0.05, we typically reject null hypothesis.
+ 
+** Correlation coefficient
+  + : two parameters move to same direction
+  - : oppsite direction
+  0 : twos are independent
+  1 : perfectly match
+
+** Correlation coefficient and a slope are not the same.
+** by  Cohen, 1988, Correlation coefficient can be defined by low ~0.1, intermidiate 0.1 ~ 0.5, high 0.5 ~
+ 
+** regression analysis in python
+  m = ols('price ~ mileage', data = df).fit()
+  m.summary()
+  y= ax+b
+  intercept : b
+  regression coefficient test : null hypothesis  = slope is zero
+  * if p < 0.05, reject the null
+  * if p >= 0.05, not reject 
+  
+  * if R-squared = 0, results do not help a prediction for y.
+  * if R-squared = 1, results must predict a value of y.
+  * if simple regression analysis, R-squared == A square of Pearson correlation coefficient
+
+** dummy coding (two categorical values)
+  ols('price ~ model', df).fit().summary()
+  y = intercept + df[p.category]
+  
+  for more than two; price ~ mileage + model
