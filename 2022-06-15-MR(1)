@@ -1,0 +1,70 @@
+머신러닝 처리에 있어서 비지도학습, 지도학습 구별할 줄 알아야
+→ cheat-sheet 전체적 흐름을 알고 있어야 한다
+fit = 머신 러닝 과정에서 학습하는 것
+fit으로 model 생성 -> prediction으로 test run 진행 -> evalution 과정(채점)
+
+머신 러닝 전에 histogram 그려서 수치형, 범주형 중 어떤 데이터인지 대략적 파악 가능
+(bins 갯수 조절하면서 확인)
+
+columns명 중 예측할 데이터 = label_name
+학습할 데이터 = features_names
+
+DecisionTreeClassifier 옵션
+
+max_depth - 깊이 조절. 
+max_depth에 따라서도 featureimportances가 달라질 수 있다.
+
+max_features == 0.9라면 전체 feature의 90%만 사용한다.
+
+X_train - 학습세트 y_train - 정답값
+
+
+.fit(X_train, y_train) : 훈련
+
+.predict(X_test) : 예측
+
+
+예측치 100프로로 나오는 경우
+1) 학습시킨 데이터와 test 데이터가 같음
+2) feature_names에서 label_name 제거 안함
+
+예측치 정확도 구할 때, data size 커지면 metrics 이용하여 구하는게 더 낫다
+
+결정 트리 최상단 = importance가 가장 큰 피쳐값이 위치
+
+gini 계수
+1- ((T 비율)2) - ((F비율)2)
+→ 0~0.5 사이 값으로 산출, 0에 가까울수록 확실하게 값이 나눠진 것
+
+Overfitting: 학습을 너무 많이 해서 학습 데이터에만 너무 맞아서 일반화와의 generalization과의 괴리가 있음 - 예: max depth를 너무 깊게 지정한 경우
+Underfitting: 학습을 적게함 - 예: max depth를 너무 적게 지정한 경우
+max_features = 전체 피쳐 대비 사용 정도, 적정선을 정해주면 오버피팅 방지해서 점수 증가
+min_samples_split/min_samples_leaf/max_leaf_nodes = 너무 잘게 나누게 되면 오버피팅(=일반화 어려워짐)
+
+<지도학습 분류형 과정>
+
+1. Training Data(X_train - 기출문제) + Traning Lables(y_train - 기출문제 정답)
+- feature_names : 학습(훈련), 예측에 사용할 컬럼을 리스트 형태로 만들어서 변수에 담기
+- label_name : 정답값
+- X_train : feature_names 에 해당되는 컬럼만 train에서 가져오기
+    - 학습(훈련)에 사용할 데이터셋 : 시험의 기출문제
+- X_test : feature_names 에 해당되는 컬럼만 test에서 가져오기
+    - 예측에 사용할 데이터셋 : 실전 시험문제
+- y_train : label_name 에 해당 되는 컬럼만 train에서 가져오기
+    - 학습(훈련)에 사용할 정답 값 : 기출문제의 정답
+1. Model(머신러닝 알고리즘) : Fit - 주어진 자료와 정답으로 공부
+- model = DecisionTreeClassifier(max_depth = 3, max_features=0.1)
+    - DecisionTreeClasifier 파라미터
+        - criterion : 가지의 분할의 품질을 측정하는 기능
+        - max_depth : 트리의 최대 깊이
+        - min_samples_split : 내부 노드를 분할하는 데 필요한 최소 샘플 수
+        - min_samples_leaf : 리프 노드에 있어야 하는 최소 샘플 수
+        - max_leaf_nodes : 리프 노드 숫자의 제한치
+        - random_state : 추정기의 무작위성을 제어, 실행했을 때 같은 결과가 나오도록 함
+1. Test Data(X_test - 실전문제) → Prediction : 기출문제와 정답을 바탕으로 X_test 풀어봄
+- model.fit(X_train, y_train)
+1. Test Labels(y_test - 실전문제의 정답=예측해야하는 값)
+- y_predict = model.predict(X_test)
+1. Evaluation : 제대로 문제를 풀었는지 채점
+- 정확도 측정 알고리즘 : accuracy_score(y_test, y_predict)
+- model score로 점수 계산 : model.score(X_test, y_test)
