@@ -1,3 +1,8 @@
+Cross Validation : 데이터 전체를 트레이닝 셋으로 만들어 학습에 사용하면 평가가 불가능하기 때문에(왜냐하면 우리가 만든 모형은 트레이닝 셋을 기반으로 만들었으므로 평가
+                   할 때 트레이닝 셋을 사용하면 당연히 결과가 좋을 수 밖에 없다), 데이터를 트레이닝 셋, 테스트 셋 두 개로 나눈다. 즉 예측을 하는 방법.
+                   
+ * 트레이닝 셋으로 학습시키고, 밸리데이션 셋으로 하이퍼파라미터 튜닝하고, 테스트 셋으로 최종 테스트를 하는 것
+---------------------------------------------------------------------------------------------------------
 하이퍼파라미터 튜닝
 
 하이퍼파라미터 (Hyper Parameter) : 머신러닝 모델을 생성할 때 사용자가 직접 설정하는 값으로, 이를 어떻게 설정하느냐에 따라 모델의 성능이 달라집니다.
@@ -7,3 +12,132 @@
 GridSearchCV() : 시도할 하이퍼파라미터들을 지정하면, 모든 조합에 대해 교차검증 후 가장 좋은 성능을 내는 하이퍼파라미터 조합을 찾음
 
 RandomizedSearchCV() : GridSearch 와 동일한 방식으로 사용하지만 모든 조합을 다 시도하지는 않고, 각 반복마다 임의의 값만 대입해 지정한 횟수만큼 평가
+---------------------------------------------------------------------------------------------------------
+GridSearch의 방법
+
+임의의 숫자로 max_depth_list와 max_features_list를 만들고,
+ 
+from sklearn.model_selection import GridSearchCV
+parameters = {'max_depth':max_depth_list, 'max_features': max_features_list}
+clf = GridSearchCV(model,param_grid = parameters, scoring='accuracy',n_jobs=-1,cv=3)
+clf.fit(X_train,y_train)
+
+# GridSearchCV 클래스의 생성자 정리
+
+# estimator : classifier, regressor, pipeline 등 가능
+
+# param_grid : 튜닝을 위해 파라미터, 사용될 파라미터를 dictionary 형태로 만들어서 넣는다.
+
+# scoring : 예측 성능을 측정할 평가 방법을 넣는다. 보통 accuracy 로 지정하여서 정확도로 성능 평가를 한다.
+
+# cv : 교차 검증에서 몇개로 분할되는지 지정한다. 3개면 빨리할 수 있음
+
+# n_jobs : cpu를 다씀
+
+# refit : True가 디폴트로 True로 하면 최적의 하이퍼 파라미터를 찾아서 재학습 시킨다.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+그리고 과정 
+
+GridSearchCV
+
+
+# 주요 매개변수
+
+# > estimator : 모델 객체 지정
+
+# > param_grid : 하이퍼파라미터 목록을 dictionary 로 전달
+
+# > scoring : 평가 지표
+
+# > cv : 교차검증 시 fold 개수
+
+# > n_jobs : 사용할 CPU 코어 개수 (1: 기본값, -1: 모든 코어 다 사용)
+
+
+
+# 메소드
+
+# > fit(X, y) : 학습
+
+# > predict(X) : 제일 좋은 성능을 낸 모델로 예측
+
+# > predict_proba(X) : 제일 좋은 성능을 낸 모델로 predict_proba() 호출
+
+
+
+# 결과 조회 변수
+
+# > cv_results_ : 파라미터 조합별 결과 조회
+
+# > best_params_ : 가장 좋은 성능을 낸 parameter 조합 조회
+
+# > best_estimator_ : 가장 좋은 성능을 낸 모델 반환
+
+---------------------------------------------------------------------------------------------------------
+RandomizedSearchd의 방법
+
+np.random으로 max_depth_list와 max_features_list를 만들고,
+
+from sklearn.model_selection import RandomizedSearchCV
+param_distributions =  {'max_depth':max_depth_list, 'max_features': max_features_list}
+clf = RandomizedSearchCV(model,param_distributions, n_iter= 5, verbose = 2, cv=3, n_jobs=-1, random_state=42)
+clf.fit(X_train,y_train)
+
+# 주요 매개변수
+
+# estimator : 모델 객체 지정
+
+# param_distributions : 하이퍼파라미터 목록을 dictionary 로 전달
+
+# n_iter : 파라미터 검색 횟수 (파라미터 검색 횟수를 지정하지 않으면 기본값이 10으로 설정되며, RandomizedSearchCV 는 이를 지정한 횟수만큼만 조합을 반복하여 평가하게 됩니다.)
+
+# scoring : 평가 지표
+
+# cv : 교차검증 시 fold 개수
+
+# n_jobs : 사용할 CPU 코어 개수 (1: 기본값, -1: 모든 코어 다 사용)
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+그리고 과정
+
+RandomizedSearchCV
+
+
+# 주요 매개변수
+
+# > estimator : 모델 객체 지정
+
+# > param_distributions : 하이퍼파라미터 목록을 dictionary 로 전달
+
+# > n_iter : 파라미터 검색 횟수
+
+# > scoring : 평가 지표
+
+# > cv : 교차검증 시 fold 개수
+
+# > n_jobs : 사용할 CPU 코어 개수 (1: 기본값, -1: 모든 코어 다 사용)
+
+
+
+# 메소드
+
+# > fit(X, y) : 학습
+
+# > predict(X) : 제일 좋은 성능을 낸 모델로 예측
+
+# > predict_proba(X) : 제일 좋은 성능을 낸 모델로 predict_proba() 호출
+
+
+
+# 결과 조회 변수
+
+# > cv_results_ : 파라미터 조합별 결과 조회
+
+# > best_params_ : 가장 좋은 성능을 낸 parameter 조합 조회
+
+# > best_estimator_ : 가장 좋은 성능을 낸 모델 반환
+
+
+
