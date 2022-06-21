@@ -1,0 +1,26 @@
+1. Random Forest : Decision Tree를 여러 개 앙상블한 것 
+        - 따라서 거의 유사하지만, 트리의 개수를 설정하는 n_estimators 가 존재함
+        
+2. Decision Tree : 불순도를 평가하는 방법에는 지니계수 / 엔트로피가 있음
+        - 지니계수와 달리 엔트로피는 log2를 사용
+        - 엔트로피 = -(p1log2(p1) + p2log2(p2))  * p1 + p2 = 1
+            엔트로피 - 0이면 가장 확실, 1이면 가장 불확실하다.
+            지니 = 0이면 불순도가 없다. 0.5이면 불순도가 많다. 확률이 반반이면
+                   생존하는지 안하는지를 알 수가 없으니까.
+            
+            o 불순도 확인 
+              - 트리계열 알고리즘은 불순도를 낮추는 방향으로 진행
+              - 지니계수 또는 엔트로피가 0이 되면 분류를 멈춤
+
+
+
+o Feature 엔지니어링
+ - (목적) 모델 정확도 향상
+ - (내용) 주어진 데이터를 예측 모델의 문제를 잘 표현할 수 있는 features로 변형시키는 과정
+ - (종류) Encoding, Normalization, imputation, Outliers, Scaling
+ 
+3. 당뇨병, 이번 예시처럼 test data에 label_data가 없는 경우에는 교차검증, Cross validation을 사용할 수 있음
+        - 관련 모듈에는 cross_validate / cross_val_predict / cross_val_score가 있는데 필요에 따라 사용
+4. 모델 학습이나 교차검증 등을 할 때, 문자 데이터나 결측치가 있으면 안 됨!
+        - feature engineering의 한 방법으로 one-hot-encoding이 있음!
+        - 단순히 문자를 숫자로 바꿔주면 Ordinal encoding이 되어 불필요한 관계가 생길 수 있는데, 이 때 좋음
