@@ -1,0 +1,45 @@
+* neg_root_mean_squared_error를 scoring옵션으로 선택한 이유는 RMSLE를 사용하기 위함이다.
+예측 값에 log를 미리 취해줬기 때문에 log옵션을 빼 준 것이다.
+
+* 미리 log 취해 준 이유
+너무 큰 값, 편향된 값들을 평탄화시켜주는 과정.
+
+* 보통 왜도, 첨도가 높을 때 로그로 변환해서 정규분포로 바꾼다.
+
+
+
+1. Feature의 유형
+        - Categorical - 1) Nominal 자연적인 순서 없음, 2) Ordinal 자연적인 순서가 있는
+        - Numerical - 1) Discrete 유한하거나 개수를 헤아릴 수 있음, 2) Continuous 무한
+2. Feature Engineering의 일반적인 순서
+        - 데이터 수집
+        - 데이터 전처리
+        - 탐색적 데이터 분석(EDA)
+        - Feature engineering
+3. Feature Engineering의 분류
+        - selection : 신호와 소음을 구별 -> 과대적합 방지
+        - extraction : 쓸만한 feature가 많지 않을 때, PCA 등을 통해 새로운 특성을 추출
+        - scaling : 변수 스케일링
+                    - Feature의 범위가 다르면 비교하기가 어렵고 제대로 작동이 안될 수도 있다.
+                1) 변수의 분산과 편차를 바꾸고 싶은 경우
+                2) 변수 간 규모 차이가 커서 한 변수가 지나치게 머신러닝 모델에 영향을 미치는 경우
+                        - 범위가 다르면 feature끼리 비교하기 어려움
+                        - 모델도 잘 작동하지 않을 수 있음 (주식 종목 별 등락폭 등)
+                3) 단, 트리 기반 알고리즘은 scaling의 영향이 다소 적음.
+                4) 종류
+                - Normalization(Standardization, Z-score scaling)
+                - Min-Max scaling
+                - Robust scaling : 사분위수 기준, 이상치에 강함
+        - transform :기존 변수를 활용하여 파생변수를 만들어주는 것
+        - binning : 범주화 - 연속형 -> 범주형 변수
+
+4. 데이터 탐색
+        - 범주형 / 연속형 feature 구분
+        (주의. month, year 등도 시간적인 순서가 있는 범주형임!)
+        - 데이터 타입 확인, 데이터프레임 정보 요약
+        - 결측치 탐색
+        (NaN 외에, '-' 등으로 채워진 정보도 있음! 걔네 주의!)
+        - 이상치 : 데이터 수집/조작 과정에서 잘못 생기거나, 예외적으로 수치가 튀는 경우
+                1) 값의 범위 지정 -> 범위 미만 혹은 초과 값에 대해 이상치 처리
+                (정상 값의 범위는, 도메인 경험/지식에 근거)
+                2) 희소값
