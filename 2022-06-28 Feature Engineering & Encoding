@@ -1,0 +1,71 @@
+mode() 최빈값
+ - df.mode.iloc[0]의 의미
+-> mode로 나온 df 형태를 시리즈로 바꿔줘서 key 값이 column값과 대응되어 na값이 최빈값으로 채워짐
+
+연속된 수치 데이터도 인코딩이 가능함 -> 수치 데이터 개수만큼 컬럼이 생김, 순서성(원의미)을 잃어버림
+
+특정 칼럼(피처)에 따른 value가 몰려있는 경우(ex, nunique == 1)
+-> 학습에 무의미, 삭제하는 것이 좋음
+
+빈 list에 append로 미리 list를 append를 넣으면 [[~]] 형태가 됨
+-> 개별 원소 값을 뜯어서 넣으려면 .extend 사용
+append = [ ] 씌워진 상태 그대로 통으로 추가
+extend = [ ] 벗겨내고 안에 있는 내용물 하나씩 추가
+
+K-Fold : - from sklearn.model_selection import KFold로 cross_val_predict의 cv = KFold를 사용하면,
+    - shuffle 여부 선택 가능 (랜덤하게 섞어서 사용 가능)
+    - 샘플링 시드 부여 가능
+  
+Gradient Boosting Tree (RandomForest의 업그레이드)
+  
+  Boosting
+  여러 얕은 트리를 연결하여 편향과 분산을 줄여 강력한 트리 생성
+  이전 트리에서 틀렸던 부분에 가중치를 두고 지속적 학습
+  낮은 성능 ->부스팅 유리 / 오버피팅 -> 배깅 유리
+  (부스팅 -> 이전 학습에 더해 지속 학습이라 오버피팅으로 문제될 시 배깅에 비해 불리)
+
+  Gradient 기울기 
+  오차 측정을 미분값(기울기)로
+  MSE 사용, huber loss.. 이상치
+
+  Gradient Boosting Tree
+    loss : 최적화할 손실함수 (squared_error)
+    learning_rate : 너무 크면 빠르지만 정확도 떨어짐
+                    너무 작아도 느리고 ...극값에 빠질 수도? 
+    n_estimators : boosting 단계 클수록 정확하다
+    subsample
+
+  bagging                vs         boosting
+  random sampling                   이전 트리 -> 틀렸던 부분
+  parallel                          sequencial
+  편향 유지, 분산 감소                  편향, 분산 감소
+  tree 비상관화
+  Extra Tree, Random Forest         Gradient Boosting Tree, XGBoost, lightgbm, CatBoost
+  bagging의 경우, 한꺼번에 트리 만드는 반면 boosting은 단계별로 순차적으로 생성
+  over fitting에서 더 좋은 성능 내기도    개별 트리 성능 낮을 때 
+
+
+  Gradient Boosting Machine
+  
+  균형 트리 분할 방식 : 균형잡힌 트리 → 깊이 최소화 vs 시간이 오래 걸림
+  XGBoost : 손실 함수를 최대한 감소, 빠르다, 과적합 규제 vs 느리고.. Over fitting
+          과적합 방지 : ↑ ✔︎n_estimators, min_child_weight, gamma
+                     ↓ ✔︎learning rate, ✔︎max_depth, subsample, colsamply_bytree
+                    - GBM과 다르게 병렬처리
+                    - 자체 과적합 규제 가능
+                    - 조기 종료 기능 있음
+                    - 주요 파라미터 : booster 구조, eval_metric/objective, eta, L1, L2 form
+                    - 과적합 방지 위해 조정해야되는 것 :
+                      n_estimators 높이기, learnig rate 낮추기(대신 오래걸림), max_depth 낮추기(적절)
+                      
+  LightGBM : XGBoost와 비교해 정확도 유지, 시간 단축
+             범주형 변수
+             Gradient-based One-side Sampling
+
+머신러닝 ~ 제조업
+
+선형회귀 : 종속변수 y와 한 개 이상의 독립(설명)변수 X와의 관계를 나타낸 것
+        - 다른 모델에 비해 작동 원리 간단, 학습 속도가 빠름
+        -  조정해줄 파라미터가 적음
+           따라서 이상치 영향을 크게 받음 (앤스콤콰르텟 참고)
+        - 수치형 변수로만 이루어진, 경향성이 명확한 데이터에 유용
